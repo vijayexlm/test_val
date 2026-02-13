@@ -77,7 +77,10 @@ button{
   animation:fall 3s linear forwards;
 }
 @keyframes fall{
-  to{transform:translateY(100vh) rotate(720deg);opacity:0;}
+  to{
+    transform:translateY(100vh) rotate(720deg);
+    opacity:0;
+  }
 }
 </style>
 </head>
@@ -95,7 +98,7 @@ button{
 </div>
 
 <!-- MUSIC -->
-<audio id="music">
+<audio id="music" loop>
   <source src="./romantic.mp3" type="audio/mp3">
 </audio>
 
@@ -154,7 +157,7 @@ function confetti(){
   }
 }
 
-/* Typewriter effect */
+/* Typewriter */
 function typeWriter(text, element, speed=40){
   let i=0;
   function type(){
@@ -167,16 +170,21 @@ function typeWriter(text, element, speed=40){
   type();
 }
 
-/* YES click */
+/* YES CLICK */
 yesBtn.addEventListener("click",()=>{
 
-  /* MUSIC FIX */
+  // play music safely
   music.currentTime = 0;
   music.play();
 
   confetti();
 
-  document.body.innerHTML=`
+  // replace page content (audio stays alive)
+  document.body.innerHTML = `
+  <audio autoplay loop>
+    <source src="./romantic.mp3" type="audio/mp3">
+  </audio>
+
   <div style="
     display:flex;
     justify-content:center;
