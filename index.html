@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Will You Be My Valentine?</title>
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#ffc0cb;
+  overflow:hidden;
+  font-family:Arial,sans-serif;
+}
+
+/* Floating hearts */
+.heart{
+  position:absolute;
+  animation:float 6s linear infinite;
+}
+@keyframes float{
+  from{transform:translateY(100vh);opacity:1;}
+  to{transform:translateY(-10vh);opacity:0;}
+}
+
+.card{
+  background:white;
+  padding:30px;
+  border-radius:20px;
+  text-align:center;
+  box-shadow:0 15px 30px rgba(0,0,0,0.2);
+  position:relative;
+  z-index:2;
+}
+
+/* heartbeat */
+.beat{
+  animation:beat 1s infinite;
+}
+@keyframes beat{
+  0%,100%{transform:scale(1);}
+  50%{transform:scale(1.15);}
+}
+
+button{
+  padding:10px 22px;
+  border:none;
+  border-radius:25px;
+  font-size:16px;
+  cursor:pointer;
+  margin:10px;
+}
+
+#yes{
+  background:hotpink;
+  color:white;
+}
+#yes:hover{transform:scale(1.1)}
+
+#no{
+  background:#eee;
+  position:absolute;
+  transition:0.2s;
+}
+
+/* Confetti */
+.confetti{
+  position:absolute;
+  width:8px;
+  height:8px;
+  animation:fall 3s linear forwards;
+}
+@keyframes fall{
+  to{transform:translateY(100vh) rotate(720deg);opacity:0;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="card" id="card">
+  <h2 class="beat">💗</h2>
+  <h2>Will you be my Valentine?</h2>
+
+  <button id="yes">Yes 💕</button>
+  <button id="no">No</button>
+
+  <p style="font-size:12px;">(No has no chance 😈)</p>
+</div>
+
+<audio id="music" loop>
+  <source src="romantic.mp3" type="audio/mp3">
+</audio>
+
+<script>
+const noBtn=document.getElementById("no");
+const yesBtn=document.getElementById("yes");
+const music=document.getElementById("music");
+
+let moves=0;
+
+/* Runaway no button */
+function escape(){
+  moves++;
+  let x=(Math.random()*500)-250;
+  let y=(Math.random()*300)-150;
+  let scale=Math.max(0.4,1-moves*0.08);
+  let rot=Math.random()*360;
+
+  noBtn.style.transform=
+    `translate(${x}px,${y}px) scale(${scale}) rotate(${rot}deg)`;
+}
+noBtn.addEventListener("mouseover",escape);
+noBtn.addEventListener("touchstart",escape);
+
+document.addEventListener("mousemove",(e)=>{
+  const r=noBtn.getBoundingClientRect();
+  const dx=e.clientX-(r.left+r.width/2);
+  const dy=e.clientY-(r.top+r.height/2);
+  if(Math.sqrt(dx*dx+dy*dy)<120) escape();
+});
+
+/* hearts */
+function hearts(){
+  const h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="💗";
+  h.style.left=Math.random()*100+"vw";
+  h.style.fontSize=(15+Math.random()*20)+"px";
+  h.style.animationDuration=(4+Math.random()*3)+"s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),6000);
+}
+setInterval(hearts,250);
+
+/* confetti */
+function confetti(){
+  for(let i=0;i<150;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=`hsl(${Math.random()*360},100%,50%)`;
+    c.style.animationDuration=(2+Math.random()*2)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
+}
+
+/* Typewriter effect */
+function typeWriter(text, element, speed=40){
+  let i=0;
+  function type(){
+    if(i<text.length){
+      element.innerHTML += text.charAt(i);
+      i++;
+      setTimeout(type,speed);
+    }
+  }
+  type();
+}
+
+/* YES CLICK */
+yesBtn.addEventListener("click",()=>{
+  music.play().catch(()=>{});
+  confetti();
+
+  document.body.innerHTML=`
+  <div style="
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    background:#ffb6c1;
+    padding:20px;
+    text-align:center;
+    font-family:Arial;
+  ">
+    <div style="
+      background:white;
+      padding:35px;
+      border-radius:20px;
+      max-width:440px;
+      box-shadow:0 15px 30px rgba(0,0,0,0.2);
+    ">
+      <h2 class="beat">💍🌸💖</h2>
+      <h2>Yay! She said YES 💕</h2>
+      <p id="loveText"></p>
+    </div>
+  </div>
+  `;
+
+  const msg = 
+`Congratulations Surbhi!
+
+This moment just became a beautiful memory ❤️
+
+You are my today, my tomorrow, and my forever.
+Thank you for being my wife,
+my love, my best friend.
+
+I love you endlessly ❤️❤️`;
+
+  typeWriter(msg, document.getElementById("loveText"), 40);
+});
+</script>
+
+</body>
+</html>
