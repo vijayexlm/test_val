@@ -12,22 +12,22 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
-  background:linear-gradient(180deg,#ff9ecb,#ffc0cb);
   overflow:hidden;
   font-family:Arial,sans-serif;
-  transition:1s;
+  background:linear-gradient(180deg,#ff9ecb,#ffc0cb);
+  transition:1.2s;
 }
 
-/* soft cinematic glow */
+/* cinematic glow */
 body::before{
   content:'';
   position:absolute;
   width:200%;
   height:200%;
-  background:radial-gradient(circle,rgba(255,255,255,.4),transparent);
-  animation:glow 8s linear infinite;
+  background:radial-gradient(circle,rgba(255,255,255,.35),transparent);
+  animation:rotateGlow 10s linear infinite;
 }
-@keyframes glow{
+@keyframes rotateGlow{
   from{transform:rotate(0);}
   to{transform:rotate(360deg);}
 }
@@ -42,22 +42,19 @@ body::before{
   to{transform:translateY(-10vh);opacity:0;}
 }
 
-/* main card */
+/* card */
 .card{
   background:white;
   padding:35px;
-  border-radius:25px;
-  text-align:center;
+  border-radius:24px;
   box-shadow:0 20px 40px rgba(0,0,0,.25);
-  position:relative;
+  text-align:center;
   z-index:2;
-  backdrop-filter:blur(6px);
 }
 
-/* heartbeat glow */
+/* heartbeat */
 .beat{
   animation:beat 1s infinite;
-  display:inline-block;
 }
 @keyframes beat{
   0%,100%{transform:scale(1);}
@@ -78,9 +75,7 @@ button{
   color:white;
   box-shadow:0 0 20px rgba(255,20,147,.5);
 }
-#yes:hover{
-  transform:scale(1.1);
-}
+#yes:hover{transform:scale(1.1);}
 
 #no{
   background:#eee;
@@ -88,22 +83,46 @@ button{
   transition:.2s;
 }
 
-/* rose petals */
+/* petals */
 .petal{
   position:absolute;
   font-size:20px;
   animation:fall 6s linear forwards;
 }
 @keyframes fall{
-  to{
-    transform:translateY(100vh) rotate(720deg);
-    opacity:0;
-  }
+  to{transform:translateY(100vh) rotate(720deg);opacity:0;}
 }
 
-/* cinematic reveal */
-@keyframes cinema{
-  from{opacity:0;transform:scale(.6);}
+/* ring animation */
+.ring{
+  font-size:50px;
+  animation:ringPop 1.5s ease;
+}
+@keyframes ringPop{
+  0%{transform:scale(0);}
+  60%{transform:scale(1.4);}
+  100%{transform:scale(1);}
+}
+
+/* photos */
+.photos{
+  display:flex;
+  justify-content:center;
+  gap:15px;
+  margin:15px 0;
+  animation:fadeIn 2s;
+}
+.photos img{
+  width:110px;
+  height:110px;
+  object-fit:cover;
+  border-radius:50%;
+  border:3px solid pink;
+  box-shadow:0 0 20px rgba(255,105,180,.4);
+}
+
+@keyframes fadeIn{
+  from{opacity:0;transform:scale(.8);}
   to{opacity:1;transform:scale(1);}
 }
 </style>
@@ -111,7 +130,7 @@ button{
 
 <body>
 
-<!-- MUSIC (never removed) -->
+<!-- MUSIC -->
 <audio id="music" loop>
   <source src="./romantic.mp3" type="audio/mp3">
 </audio>
@@ -134,7 +153,7 @@ const music=document.getElementById("music");
 
 let moves=0;
 
-/* RUNAWAY NO BUTTON */
+/* runaway NO */
 function escape(){
   moves++;
   let x=(Math.random()*500)-250;
@@ -155,7 +174,7 @@ document.addEventListener("mousemove",(e)=>{
   if(Math.sqrt(dx*dx+dy*dy)<120) escape();
 });
 
-/* floating hearts */
+/* hearts background */
 function hearts(){
   const h=document.createElement("div");
   h.className="heart";
@@ -168,7 +187,7 @@ function hearts(){
 }
 setInterval(hearts,220);
 
-/* rose petals */
+/* petals */
 function petals(){
   for(let i=0;i<150;i++){
     const p=document.createElement("div");
@@ -186,7 +205,7 @@ function typeWriter(text,el,speed=40){
   let i=0;
   function type(){
     if(i<text.length){
-      el.innerHTML+=text.charAt(i);
+      el.innerHTML += text.charAt(i);
       i++;
       setTimeout(type,speed);
     }
@@ -194,7 +213,7 @@ function typeWriter(text,el,speed=40){
   type();
 }
 
-/* GOD LEVEL YES CLICK */
+/* HOLLYWOOD YES CLICK */
 yesBtn.addEventListener("click",()=>{
 
   music.currentTime=0;
@@ -203,14 +222,18 @@ yesBtn.addEventListener("click",()=>{
   petals();
 
   document.body.style.background =
-    "linear-gradient(180deg,#ff7eb3,#ffb6c1)";
+    "linear-gradient(180deg,#ff6fa5,#ffb6c1)";
 
   card.innerHTML=`
-    <div style="animation:cinema 1.5s;">
-      <h2 class="beat">💍🌸💖</h2>
-      <h2>Yay! She said YES 💕</h2>
-      <p id="loveText"></p>
+    <div class="ring">💍</div>
+    <h2 class="beat">Yay! She said YES 💕</h2>
+
+    <div class="photos">
+      <img src="./you.jpg">
+      <img src="./surbhi.jpg">
     </div>
+
+    <p id="loveText"></p>
   `;
 
   const msg =
