@@ -98,7 +98,7 @@ button{
   100%{transform:scale(1);}
 }
 
-/* romantic photo animation */
+/* romantic photos */
 .loveContainer{
   display:flex;
   align-items:center;
@@ -122,7 +122,7 @@ button{
 .centerHeart{
   font-size:40px;
   opacity:0;
-  animation:heartPop 2.2s forwards;
+  animation:heartPop 1.8s forwards;
 }
 
 @keyframes moveLeft{
@@ -176,7 +176,7 @@ function escape(){
 noBtn.addEventListener("mouseover",escape);
 noBtn.addEventListener("touchstart",escape);
 
-/* hearts bg */
+/* hearts */
 function hearts(){
   const h=document.createElement("div");
   h.className="heart";
@@ -215,7 +215,7 @@ function typeWriter(text,el,speed=40){
   type();
 }
 
-/* YES click */
+/* YES CLICK */
 yesBtn.addEventListener("click",()=>{
 
   music.currentTime=0;
@@ -228,13 +228,20 @@ yesBtn.addEventListener("click",()=>{
     <h2 class="beat">Yay! She said YES 💕</h2>
 
     <div class="loveContainer">
-      <img class="photo left" src="./you.jpg">
-      <div class="centerHeart">❤️</div>
-      <img class="photo right" src="./surbhi.jpg">
+      <img class="photo" id="leftPhoto" src="./you.jpg">
+      <div class="centerHeart" id="heart">❤️</div>
+      <img class="photo" id="rightPhoto" src="./surbhi.jpg">
     </div>
 
     <p id="loveText"></p>
   `;
+
+  // animation trigger FIX
+  setTimeout(()=>{
+    document.getElementById("leftPhoto").classList.add("left");
+    document.getElementById("rightPhoto").classList.add("right");
+    document.getElementById("heart").style.opacity=1;
+  },100);
 
   const msg =
 `Congratulations Surbhi!
