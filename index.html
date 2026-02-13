@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For Surbhi ❤️</title>
+<title>Will You Be My Valentine?</title>
 
 <style>
 body{
@@ -17,7 +17,7 @@ body{
   font-family:Arial,sans-serif;
 }
 
-/* floating hearts */
+/* Floating hearts */
 .heart{
   position:absolute;
   animation:float 6s linear infinite;
@@ -27,19 +27,20 @@ body{
   to{transform:translateY(-10vh);opacity:0;}
 }
 
-/* card */
 .card{
   background:white;
   padding:30px;
   border-radius:20px;
   text-align:center;
-  box-shadow:0 15px 30px rgba(0,0,0,.25);
+  box-shadow:0 15px 30px rgba(0,0,0,0.2);
   position:relative;
   z-index:2;
 }
 
 /* heartbeat */
-.beat{animation:beat 1s infinite;}
+.beat{
+  animation:beat 1s infinite;
+}
 @keyframes beat{
   0%,100%{transform:scale(1);}
   50%{transform:scale(1.15);}
@@ -58,29 +59,28 @@ button{
   background:hotpink;
   color:white;
 }
-#yes:hover{transform:scale(1.1);}
+#yes:hover{
+  transform:scale(1.1);
+}
 
 #no{
   background:#eee;
   position:absolute;
-  transition:.2s;
+  transition:0.2s;
 }
 
-/* rose petals */
-.petal{
+/* Confetti */
+.confetti{
   position:absolute;
-  font-size:18px;
-  animation:fall 5s linear forwards;
+  width:8px;
+  height:8px;
+  animation:fall 3s linear forwards;
 }
 @keyframes fall{
-  from{transform:translateY(-20px) rotate(0);}
-  to{transform:translateY(100vh) rotate(720deg);opacity:0;}
-}
-
-/* cinematic zoom */
-@keyframes zoomIn{
-  from{opacity:0;transform:scale(0.7);}
-  to{opacity:1;transform:scale(1);}
+  to{
+    transform:translateY(100vh) rotate(720deg);
+    opacity:0;
+  }
 }
 </style>
 </head>
@@ -94,9 +94,10 @@ button{
   <button id="yes">Yes 💕</button>
   <button id="no">No</button>
 
-  <p style="font-size:12px">(No has no chance 😈)</p>
+  <p style="font-size:12px;">(No has no chance 😈)</p>
 </div>
 
+<!-- MUSIC -->
 <audio id="music" loop>
   <source src="./romantic.mp3" type="audio/mp3">
 </audio>
@@ -108,28 +109,29 @@ const music=document.getElementById("music");
 
 let moves=0;
 
-/* runaway NO button */
+/* Runaway NO button */
 function escape(){
   moves++;
   let x=(Math.random()*500)-250;
   let y=(Math.random()*300)-150;
-  let s=Math.max(0.4,1-moves*0.08);
-  let r=Math.random()*360;
+  let scale=Math.max(0.4,1-moves*0.08);
+  let rot=Math.random()*360;
 
   noBtn.style.transform=
-  `translate(${x}px,${y}px) scale(${s}) rotate(${r}deg)`;
+  `translate(${x}px,${y}px) scale(${scale}) rotate(${rot}deg)`;
 }
+
 noBtn.addEventListener("mouseover",escape);
 noBtn.addEventListener("touchstart",escape);
 
 document.addEventListener("mousemove",(e)=>{
-  const rect=noBtn.getBoundingClientRect();
-  const dx=e.clientX-(rect.left+rect.width/2);
-  const dy=e.clientY-(rect.top+rect.height/2);
+  const r=noBtn.getBoundingClientRect();
+  const dx=e.clientX-(r.left+r.width/2);
+  const dy=e.clientY-(r.top+r.height/2);
   if(Math.sqrt(dx*dx+dy*dy)<120) escape();
 });
 
-/* floating hearts bg */
+/* Floating hearts */
 function hearts(){
   const h=document.createElement("div");
   h.className="heart";
@@ -142,25 +144,25 @@ function hearts(){
 }
 setInterval(hearts,250);
 
-/* rose petals */
-function petals(){
-  for(let i=0;i<120;i++){
-    const p=document.createElement("div");
-    p.className="petal";
-    p.innerHTML="🌹";
-    p.style.left=Math.random()*100+"vw";
-    p.style.animationDuration=(3+Math.random()*3)+"s";
-    document.body.appendChild(p);
-    setTimeout(()=>p.remove(),6000);
+/* Confetti */
+function confetti(){
+  for(let i=0;i<150;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=`hsl(${Math.random()*360},100%,50%)`;
+    c.style.animationDuration=(2+Math.random()*2)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
   }
 }
 
-/* typewriter */
-function typeWriter(text, el, speed=40){
+/* Typewriter */
+function typeWriter(text, element, speed=40){
   let i=0;
   function type(){
     if(i<text.length){
-      el.innerHTML += text.charAt(i);
+      element.innerHTML += text.charAt(i);
       i++;
       setTimeout(type,speed);
     }
@@ -171,12 +173,14 @@ function typeWriter(text, el, speed=40){
 /* YES CLICK */
 yesBtn.addEventListener("click",()=>{
 
-  music.currentTime=0;
+  // play music safely
+  music.currentTime = 0;
   music.play();
 
-  petals();
+  confetti();
 
-  document.body.innerHTML=`
+  // replace page content (audio stays alive)
+  document.body.innerHTML = `
   <audio autoplay loop>
     <source src="./romantic.mp3" type="audio/mp3">
   </audio>
@@ -187,17 +191,16 @@ yesBtn.addEventListener("click",()=>{
     align-items:center;
     height:100vh;
     background:#ffb6c1;
-    animation:zoomIn 1.2s;
-    text-align:center;
     padding:20px;
+    text-align:center;
     font-family:Arial;
   ">
     <div style="
       background:white;
       padding:35px;
       border-radius:20px;
-      max-width:450px;
-      box-shadow:0 18px 35px rgba(0,0,0,.25);
+      max-width:440px;
+      box-shadow:0 15px 30px rgba(0,0,0,0.2);
     ">
       <h2 class="beat">💍🌸💖</h2>
       <h2>Yay! She said YES 💕</h2>
