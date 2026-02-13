@@ -59,7 +59,9 @@ button{
   background:hotpink;
   color:white;
 }
-#yes:hover{transform:scale(1.1)}
+#yes:hover{
+  transform:scale(1.1);
+}
 
 #no{
   background:#eee;
@@ -82,7 +84,7 @@ button{
 
 <body>
 
-<div class="card" id="card">
+<div class="card">
   <h2 class="beat">💗</h2>
   <h2>Will you be my Valentine?</h2>
 
@@ -92,8 +94,9 @@ button{
   <p style="font-size:12px;">(No has no chance 😈)</p>
 </div>
 
-<audio id="music" loop>
-  <source src="romantic.mp3" type="audio/mp3">
+<!-- MUSIC -->
+<audio id="music">
+  <source src="./romantic.mp3" type="audio/mp3">
 </audio>
 
 <script>
@@ -103,7 +106,7 @@ const music=document.getElementById("music");
 
 let moves=0;
 
-/* Runaway no button */
+/* Runaway NO button */
 function escape(){
   moves++;
   let x=(Math.random()*500)-250;
@@ -112,8 +115,9 @@ function escape(){
   let rot=Math.random()*360;
 
   noBtn.style.transform=
-    `translate(${x}px,${y}px) scale(${scale}) rotate(${rot}deg)`;
+  `translate(${x}px,${y}px) scale(${scale}) rotate(${rot}deg)`;
 }
+
 noBtn.addEventListener("mouseover",escape);
 noBtn.addEventListener("touchstart",escape);
 
@@ -124,7 +128,7 @@ document.addEventListener("mousemove",(e)=>{
   if(Math.sqrt(dx*dx+dy*dy)<120) escape();
 });
 
-/* hearts */
+/* Floating hearts */
 function hearts(){
   const h=document.createElement("div");
   h.className="heart";
@@ -137,7 +141,7 @@ function hearts(){
 }
 setInterval(hearts,250);
 
-/* confetti */
+/* Confetti */
 function confetti(){
   for(let i=0;i<150;i++){
     const c=document.createElement("div");
@@ -163,9 +167,13 @@ function typeWriter(text, element, speed=40){
   type();
 }
 
-/* YES CLICK */
+/* YES click */
 yesBtn.addEventListener("click",()=>{
-  music.play().catch(()=>{});
+
+  /* MUSIC FIX */
+  music.currentTime = 0;
+  music.play();
+
   confetti();
 
   document.body.innerHTML=`
@@ -193,7 +201,7 @@ yesBtn.addEventListener("click",()=>{
   </div>
   `;
 
-  const msg = 
+  const msg =
 `Congratulations Surbhi!
 
 This moment just became a beautiful memory ❤️
