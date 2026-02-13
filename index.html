@@ -15,16 +15,15 @@ body{
   overflow:hidden;
   font-family:Arial,sans-serif;
   background:linear-gradient(180deg,#ff9ecb,#ffc0cb);
-  transition:1.2s;
 }
 
-/* cinematic glow */
+/* glow */
 body::before{
   content:'';
   position:absolute;
   width:200%;
   height:200%;
-  background:radial-gradient(circle,rgba(255,255,255,.35),transparent);
+  background:radial-gradient(circle,rgba(255,255,255,.3),transparent);
   animation:rotateGlow 10s linear infinite;
 }
 @keyframes rotateGlow{
@@ -32,7 +31,7 @@ body::before{
   to{transform:rotate(360deg);}
 }
 
-/* floating hearts */
+/* hearts */
 .heart{
   position:absolute;
   animation:float 6s linear infinite;
@@ -42,7 +41,6 @@ body::before{
   to{transform:translateY(-10vh);opacity:0;}
 }
 
-/* card */
 .card{
   background:white;
   padding:35px;
@@ -52,10 +50,7 @@ body::before{
   z-index:2;
 }
 
-/* heartbeat */
-.beat{
-  animation:beat 1s infinite;
-}
+.beat{animation:beat 1s infinite;}
 @keyframes beat{
   0%,100%{transform:scale(1);}
   50%{transform:scale(1.2);}
@@ -73,7 +68,6 @@ button{
 #yes{
   background:hotpink;
   color:white;
-  box-shadow:0 0 20px rgba(255,20,147,.5);
 }
 #yes:hover{transform:scale(1.1);}
 
@@ -93,7 +87,7 @@ button{
   to{transform:translateY(100vh) rotate(720deg);opacity:0;}
 }
 
-/* ring animation */
+/* ring */
 .ring{
   font-size:50px;
   animation:ringPop 1.5s ease;
@@ -104,15 +98,16 @@ button{
   100%{transform:scale(1);}
 }
 
-/* photos */
-.photos{
+/* romantic photo animation */
+.loveContainer{
   display:flex;
+  align-items:center;
   justify-content:center;
-  gap:15px;
-  margin:15px 0;
-  animation:fadeIn 2s;
+  gap:20px;
+  margin:20px 0;
 }
-.photos img{
+
+.photo{
   width:110px;
   height:110px;
   object-fit:cover;
@@ -121,16 +116,33 @@ button{
   box-shadow:0 0 20px rgba(255,105,180,.4);
 }
 
-@keyframes fadeIn{
-  from{opacity:0;transform:scale(.8);}
-  to{opacity:1;transform:scale(1);}
+.left{animation:moveLeft 2s forwards;}
+.right{animation:moveRight 2s forwards;}
+
+.centerHeart{
+  font-size:40px;
+  opacity:0;
+  animation:heartPop 2.2s forwards;
+}
+
+@keyframes moveLeft{
+  from{transform:translateX(-120px);opacity:0;}
+  to{transform:translateX(0);opacity:1;}
+}
+@keyframes moveRight{
+  from{transform:translateX(120px);opacity:0;}
+  to{transform:translateX(0);opacity:1;}
+}
+@keyframes heartPop{
+  0%{opacity:0;transform:scale(0);}
+  60%{opacity:1;transform:scale(1.4);}
+  100%{opacity:1;transform:scale(1);}
 }
 </style>
 </head>
 
 <body>
 
-<!-- MUSIC -->
 <audio id="music" loop>
   <source src="./romantic.mp3" type="audio/mp3">
 </audio>
@@ -153,28 +165,18 @@ const music=document.getElementById("music");
 
 let moves=0;
 
-/* runaway NO */
+/* runaway no */
 function escape(){
   moves++;
   let x=(Math.random()*500)-250;
   let y=(Math.random()*300)-150;
-  let s=Math.max(.35,1-moves*.08);
-  let r=Math.random()*360;
-
   noBtn.style.transform=
-  `translate(${x}px,${y}px) scale(${s}) rotate(${r}deg)`;
+  `translate(${x}px,${y}px) scale(${Math.max(.35,1-moves*.08)}) rotate(${Math.random()*360}deg)`;
 }
 noBtn.addEventListener("mouseover",escape);
 noBtn.addEventListener("touchstart",escape);
 
-document.addEventListener("mousemove",(e)=>{
-  const rect=noBtn.getBoundingClientRect();
-  const dx=e.clientX-(rect.left+rect.width/2);
-  const dy=e.clientY-(rect.top+rect.height/2);
-  if(Math.sqrt(dx*dx+dy*dy)<120) escape();
-});
-
-/* hearts background */
+/* hearts bg */
 function hearts(){
   const h=document.createElement("div");
   h.className="heart";
@@ -213,7 +215,7 @@ function typeWriter(text,el,speed=40){
   type();
 }
 
-/* HOLLYWOOD YES CLICK */
+/* YES click */
 yesBtn.addEventListener("click",()=>{
 
   music.currentTime=0;
@@ -221,16 +223,14 @@ yesBtn.addEventListener("click",()=>{
 
   petals();
 
-  document.body.style.background =
-    "linear-gradient(180deg,#ff6fa5,#ffb6c1)";
-
   card.innerHTML=`
     <div class="ring">💍</div>
     <h2 class="beat">Yay! She said YES 💕</h2>
 
-    <div class="photos">
-      <img src="./you.jpg">
-      <img src="./surbhi.jpg">
+    <div class="loveContainer">
+      <img class="photo left" src="./you.jpg">
+      <div class="centerHeart">❤️</div>
+      <img class="photo right" src="./surbhi.jpg">
     </div>
 
     <p id="loveText"></p>
