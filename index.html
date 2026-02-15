@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For Vannu 🌸</title>
+<title>WOW Surprise for Vannu 🌈</title>
 
 <style>
 body{
@@ -12,37 +12,55 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
-  font-family:Arial,sans-serif;
-  background:linear-gradient(180deg,#ffd6e8,#ffeef5);
   overflow:hidden;
+  font-family:Arial,sans-serif;
+  background:linear-gradient(270deg,#ffd6f0,#fff7c2,#d6f5ff,#ffe0b3);
+  background-size:600% 600%;
+  animation:rainbow 10s ease infinite;
+}
+@keyframes rainbow{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
 }
 
-/* floating emoji */
+/* floating items */
 .float{
   position:absolute;
-  animation:float 6s linear infinite;
+  animation:float 7s linear infinite;
 }
 @keyframes float{
   from{transform:translateY(100vh);opacity:1;}
   to{transform:translateY(-10vh);opacity:0;}
 }
 
+/* dancing animals */
+.dance{
+  font-size:35px;
+  animation:dance 1s infinite alternate;
+}
+@keyframes dance{
+  from{transform:translateY(0);}
+  to{transform:translateY(-8px);}
+}
+
+/* card */
 .card{
   background:white;
   padding:30px;
-  border-radius:20px;
+  border-radius:25px;
   text-align:center;
-  box-shadow:0 10px 25px rgba(0,0,0,.2);
+  box-shadow:0 12px 30px rgba(0,0,0,.2);
   z-index:2;
 }
 
 button{
-  padding:10px 20px;
+  padding:10px 22px;
   margin:10px;
   border:none;
   border-radius:20px;
-  cursor:pointer;
   font-size:16px;
+  cursor:pointer;
 }
 
 #yes{
@@ -56,8 +74,26 @@ button{
   transition:.2s;
 }
 
-.big{
-  font-size:40px;
+/* gift */
+.gift{
+  font-size:80px;
+  animation:pop 1.2s ease;
+}
+@keyframes pop{
+  0%{transform:scale(0);}
+  70%{transform:scale(1.4);}
+  100%{transform:scale(1);}
+}
+
+/* confetti */
+.confetti{
+  position:absolute;
+  width:8px;
+  height:8px;
+  animation:fall 3s linear forwards;
+}
+@keyframes fall{
+  to{transform:translateY(100vh) rotate(720deg);opacity:0;}
 }
 </style>
 </head>
@@ -65,11 +101,11 @@ button{
 <body>
 
 <div class="card" id="card">
-  <h2 class="big">🌸😊💖</h2>
-  <h2>Hi Vannu! 💕</h2>
-  <p>Do you love your Mama? 😄</p>
+  <div class="dance">🧸 🐰 🐻</div>
+  <h2>Hi Vannu 😊💖</h2>
+  <p>Ready for a WOW surprise? 🌈✨</p>
 
-  <button id="yes">Yes 😄</button>
+  <button id="yes">Yes 🎉</button>
   <button id="no">No 🙈</button>
 </div>
 
@@ -78,36 +114,53 @@ const yes=document.getElementById("yes");
 const no=document.getElementById("no");
 const card=document.getElementById("card");
 
-/* funny moving NO button */
+/* funny NO button */
 no.addEventListener("mouseover",()=>{
   let x=(Math.random()*250)-120;
   let y=(Math.random()*150)-80;
   no.style.transform=`translate(${x}px,${y}px)`;
 });
 
-/* floating emojis */
+/* floating cute items */
 function makeFloat(){
   const d=document.createElement("div");
   d.className="float";
-  d.innerHTML=["💖","⭐","🌸","😊"][Math.floor(Math.random()*4)];
+  const items=["🎈","⭐","🌈","🦄","💖","✨","🐼","🍭"];
+  d.innerHTML=items[Math.floor(Math.random()*items.length)];
   d.style.left=Math.random()*100+"vw";
-  d.style.fontSize=(20+Math.random()*20)+"px";
-  d.style.animationDuration=(4+Math.random()*3)+"s";
+  d.style.fontSize=(20+Math.random()*25)+"px";
+  d.style.animationDuration=(4+Math.random()*4)+"s";
   document.body.appendChild(d);
-  setTimeout(()=>d.remove(),6000);
+  setTimeout(()=>d.remove(),7000);
 }
-setInterval(makeFloat,300);
+setInterval(makeFloat,220);
 
-/* YES click */
+/* confetti blast */
+function confetti(){
+  for(let i=0;i<120;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=`hsl(${Math.random()*360},100%,50%)`;
+    c.style.animationDuration=(2+Math.random()*2)+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),3000);
+  }
+}
+
+/* WOW surprise */
 yes.onclick=()=>{
+  confetti();
+
   card.innerHTML=`
-    <h2 class="big">🎉🥰🎈</h2>
-    <h2>Yaaay Vannu! 💕</h2>
+    <div class="gift">🎁</div>
+    <h2>WOW Surprise for Vannu! 🌈</h2>
     <p>
-      You are the cutest little princess 👑<br><br>
-      Always keep smiling 😊<br>
-      Always keep shining ✨<br><br>
-      Mama loves you sooo much 💖
+      You are our little rainbow 🌈💖<br><br>
+      Keep smiling 😄<br>
+      Keep dancing 🐰<br>
+      Keep shining like a star ⭐<br><br>
+      Mama loves you soooo much 💕
     </p>
   `;
 };
